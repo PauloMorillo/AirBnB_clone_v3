@@ -1,0 +1,28 @@
+#! /usr/bin/env python3
+""" This module create an API"""
+
+from flask import Flask
+from models import storage
+from api.v1.views import app_views
+from os import getenv
+
+app = Flask(__name__)
+
+app.register_blueprint(app_views)
+
+
+@app.teardown_appcontext
+def handleclose(self):
+    """ method to close database session """
+    storage.close()
+
+
+@app.errorhandler(404)
+def errorhand(e):
+    """ Return JSON instead of HTML """
+    data = {"error": "Not found"}
+    return data, 404
+
+if __name__ == "__main__":
+    app.run(host=getenv("HBNB_API_HOST"), port=getenv("HBNB_API_PORT"),
+            threaded=True)
