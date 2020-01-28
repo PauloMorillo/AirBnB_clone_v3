@@ -80,5 +80,4 @@ class FileStorage:
 
     def count(self, cls=None):
         """ Return length of the class or classes """
-        # print(models.storage.all(cls))
         return len(models.storage.all(cls))
