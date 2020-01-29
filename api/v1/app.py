@@ -21,7 +21,8 @@ def handleclose(self):
 def errorhand(e):
     """ Return JSON instead of HTML """
     data = {"error": "Not found"}
-    return data, 404
+    return (jsonify(data), 404)
+
 
 if __name__ == "__main__":
     app.run(host=getenv("HBNB_API_HOST"), port=getenv("HBNB_API_PORT"),
