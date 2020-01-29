@@ -21,14 +21,11 @@ def showStateId(state_id):
     """ Shows all states db storage """
     state = models.storage.get("State", state_id)
     if state:
-        return state.to_dict()
+        return jsonify(state.to_dict())
     abort(404)
 
 
-@app_views.route(
-    '/states/<state_id>',
-    strict_slashes=False,
-    methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'])
 def deleteStateId(state_id):
     """ Deletes a state in db storage """
     state = models.storage.get("State", state_id)
