@@ -32,11 +32,11 @@ def showStateId(state_id):
 def deleteStateId(state_id):
     """ Deletes a state in db storage """
     state = models.storage.get("State", state_id)
-    if state:
-        state.delete()
-        models.storage.save()
-        return jsonify({})
-    abort(404)
+    if state is None:
+        abort(404)
+    state.delete()
+    models.storage.save()
+    return jsonify({})
 
 
 @app_views.route('/states', strict_slashes=False, methods=['POST'])
