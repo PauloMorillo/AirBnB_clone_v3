@@ -1,10 +1,10 @@
-#!/usr/bin/python3
+#! /usr/bin/env python3
 """ This module create an API"""
 
-from flask import Flask, jsonify
+from flask import Flask
 from models import storage
 from api.v1.views import app_views
-from os import getenv, environ
+from os import getenv
 
 app = Flask(__name__)
 
@@ -21,9 +21,8 @@ def handleclose(self):
 def errorhand(e):
     """ Return JSON instead of HTML """
     data = {"error": "Not found"}
-    return (jsonify(data), 404)
+    return data, 404
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host=getenv("HBNB_API_HOST"), port=getenv("HBNB_API_PORT"),
             threaded=True)
