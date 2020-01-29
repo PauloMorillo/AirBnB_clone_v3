@@ -21,8 +21,8 @@ def showStateId(state_id):
     """ Shows all states db storage """
     state = models.storage.get("State", state_id)
     if state:
-        return state.to_dict()
-    abort(404)
+        return jsonify(state.to_dict())
+    return (jsonify({"error": "Not found"}), 404)
 
 
 @app_views.route(
@@ -35,7 +35,7 @@ def deleteStateId(state_id):
     if state:
         state.delete()
         models.storage.save()
-        return {}
+        return (jsonify({}), 200)
     abort(404)
 
 
@@ -47,13 +47,13 @@ def createState():
             data = request.get_json()
         except BaseException:
             data = {"error": "Not a JSON"}
-            return data, 400
+            return (jsonify(data), 400)
         if "name" in data:
             state = State(name=data["name"])
             state.save()
-            return state.to_dict(), 201
+            return (jsonify(state.to_dict()), 201)
         data = {"error": "Missing name"}
-        return data, 400
+        return (jsonify(data), 400)
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
@@ -65,10 +65,10 @@ def updateState(state_id):
             data = request.get_json()
         except BaseException:
             data = {"error": "Not a JSON"}
-            return data, 400
+            return (jsonify(data), 400)
         for key, value in data.items():
             if key == 'name':
                 setattr(state, key, value)
         state.save()
-        return state.to_dict()
+        return jsonify(state.to_dict(), 200)
     abort(404)

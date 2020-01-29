@@ -10,7 +10,6 @@ import models
 
 @app_views.route(
     '/states/<state_id>/cities',
-    strict_slashes=False,
     methods=['GET'])
 def showCities(state_id):
     """ Shows all cities for a state in db storage """
@@ -25,7 +24,7 @@ def showCities(state_id):
     abort(404)
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['GET'])
+@app_views.route('/cities/<city_id>', methods=['GET'])
 def showCity(city_id):
     """ Shows a specific city in db """
     city = models.storage.get("City", city_id)
@@ -34,20 +33,19 @@ def showCity(city_id):
     abort(404)
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['DELETE'])
+@app_views.route('/cities/<city_id>', methods=['DELETE'])
 def deleteCity(city_id):
     """ Deletes a city in db storage """
     city = models.storage.get("City", city_id)
     if city:
         city.delete()
         models.storage.save()
-        return {}
+        return jsonify({})
     abort(404)
 
 
 @app_views.route(
     '/states/<state_id>/cities',
-    strict_slashes=False,
     methods=['POST'])
 def createCity(state_id):
     """ Creates a city for a state in db storage """
@@ -65,10 +63,10 @@ def createCity(state_id):
             city.save()
             return city.to_dict(), 201
         data = {"error": "Missing name"}
-        return data, 400
+        return (jsonify(data), 400)
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['PUT'])
+@app_views.route('/cities/<city_id>', methods=['PUT'])
 def updateCity(city_id):
     """ Updates a city in db storage """
     city = models.storage.get("City", city_id)
@@ -82,5 +80,5 @@ def updateCity(city_id):
             if key == 'name':
                 setattr(city, key, value)
         city.save()
-        return city.to_dict()
+        return jsonify(city.to_dict())
     abort(404)

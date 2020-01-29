@@ -3,14 +3,14 @@
 
 from api.v1.views import app_views
 import models
-# from flask import jsonify
+from flask import jsonify
 
 
 @app_views.route('/status')
 def statuspage():
     """method to return status"""
     di = {"status": "OK"}
-    return di
+    return jsonify(di)
 
 
 @app_views.route('/stats')
@@ -23,4 +23,4 @@ def statspage():
     di['reviews'] = models.storage.count("Review")
     di['states'] = models.storage.count("State")
     di['users'] = models.storage.count("User")
-    return di
+    return jsonify(di)
