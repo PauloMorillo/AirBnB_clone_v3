@@ -1,10 +1,10 @@
-#! /usr/bin/env python3
+#!/usr/bin/python3
 """ This module create an API"""
 
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
-from os import getenv
+from os import getenv, environ
 
 app = Flask(__name__)
 
@@ -24,6 +24,6 @@ def errorhand(e):
     return (jsonify(data), 404)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(host=getenv("HBNB_API_HOST"), port=getenv("HBNB_API_PORT"),
             threaded=True)
