@@ -35,7 +35,7 @@ def deleteStateId(state_id):
     if state:
         state.delete()
         models.storage.save()
-        return {}
+        return jsonify({})
     abort(404)
 
 
@@ -53,7 +53,7 @@ def createState():
             state.save()
             return state.to_dict(), 201
         data = {"error": "Missing name"}
-        return data, 400
+        return (jsonify(data), 400)
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
@@ -70,5 +70,5 @@ def updateState(state_id):
             if key == 'name':
                 setattr(state, key, value)
         state.save()
-        return state.to_dict()
+        return jsonify(state.to_dict())
     abort(404)
