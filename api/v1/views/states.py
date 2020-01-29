@@ -51,7 +51,7 @@ def createState():
         if "name" in data:
             state = State(name=data["name"])
             state.save()
-            return state.to_dict(), 201
+            return (jsonify(state.to_dict()), 201)
         data = {"error": "Missing name"}
         return (jsonify(data), 400)
 
