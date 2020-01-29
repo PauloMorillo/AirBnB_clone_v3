@@ -7,7 +7,7 @@ from models.state import State
 import models
 
 
-@app_views.route('/states', strict_slashes=False, methods=['GET'])
+@app_views.route('/states', methods=['GET'])
 def showStates():
     """ Shows all states db storage """
     myList = []
@@ -16,7 +16,7 @@ def showStates():
     return jsonify(myList)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'])
 def showStateId(state_id):
     """ Shows all states db storage """
     state = models.storage.get("State", state_id)
@@ -39,7 +39,7 @@ def deleteStateId(state_id):
     return jsonify({})
 
 
-@app_views.route('/states/', strict_slashes=False, methods=['POST'])
+@app_views.route('/states/', methods=['POST'])
 def createState():
     """ Creates a state db storage """
     if request.is_json:
@@ -56,7 +56,7 @@ def createState():
         return (jsonify(data), 400)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'])
 def updateState(state_id):
     """ Updates a state in db storage """
     state = models.storage.get("State", state_id)
