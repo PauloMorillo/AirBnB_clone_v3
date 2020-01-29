@@ -80,7 +80,7 @@ class DBStorage:
         if cls and id:
             objectsList = models.storage.all(cls)
             for key, value in objectsList.items():
-                if id in key:
+                if id == value.id:
                     return value
         return None
 

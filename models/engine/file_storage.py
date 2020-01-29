@@ -74,7 +74,7 @@ class FileStorage:
         """ Get object by ID """
         if cls and id:
             for key, value in models.storage.all(cls).items():
-                if id in key:
+                if id == value.id:
                     return value
         return None
 
