@@ -64,28 +64,22 @@ def createCity(state_id):
 def updateCity(city_id):
     """ Updates a city in db storage """
     city = models.storage.get("City", city_id)
-    if city and request.is_json:
-        try:
-            data = request.get_json()
-        except BaseException:
-            data = {"error": "Not a JSON"}
-            return data, 400
-        for key, value in data.items():
-            if key == 'name':
-                setattr(city, key, value)
-        city.save()
-        return jsonify(city.to_dict())
-    abort(404)
+    if city is None:
+        abort(404)
+    if not request.get_json():
+        return jsonify({'error': 'Not a JSON'}), 400
+
+    for key, val in request.get_json().items():
+        if key != 'id' and key != 'created_at' and key != 'updated_at':
+            setattr(city, key, val)
+    city.save()
+    return jsonify(city.to_dict()), 200
 
 
 # @app_views.route('/states/<state_id>', methods=['PUT'])
 # def putStates(state_id):
 #     """ Updates a State in db storage """
-#     state = models.storage.get("State", state_id)
-#     if state is None:
-#         abort(404)
-#     if not request.get_json():
-#         return jsonify({'error': 'Not a JSON'}), 400
+
 #     for key, val in request.get_json().items():
 #         if key != 'id' and key != 'created_at' and key != 'updated_at':
 #             setattr(state, key, val)
