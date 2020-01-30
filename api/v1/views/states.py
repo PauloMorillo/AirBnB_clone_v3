@@ -41,7 +41,7 @@ def createState():
     """ Creates a state db storage """
     try:
         data = request.get_json()
-    except BaseException:
+    except:
         data = {"error": "Not a JSON"}
         return data, 400
     if "name" in data:
