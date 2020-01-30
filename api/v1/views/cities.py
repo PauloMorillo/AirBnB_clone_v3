@@ -74,14 +74,3 @@ def updateCity(city_id):
             setattr(city, key, val)
     city.save()
     return jsonify(city.to_dict()), 200
-
-
-# @app_views.route('/states/<state_id>', methods=['PUT'])
-# def putStates(state_id):
-#     """ Updates a State in db storage """
-
-#     for key, val in request.get_json().items():
-#         if key != 'id' and key != 'created_at' and key != 'updated_at':
-#             setattr(state, key, val)
-#     state.save()
-#     return jsonify(state.to_dict()), 200
