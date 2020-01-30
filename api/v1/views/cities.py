@@ -44,26 +44,20 @@ def deleteCity(city_id):
     abort(404)
 
 
-@app_views.route(
-    '/states/<state_id>/cities',
-    methods=['POST'])
+@app_views.route('/states/<state_id>/cities', methods=['POST'])
 def createCity(state_id):
     """ Creates a city for a state in db storage """
+    if not request.json:
+        return jsonify({"error": "Not a JSON"}), 400
+    if 'name' not in request.json:
+        return jsonify({"error": "Missing name"}), 400
     if models.storage.get("State", state_id) is None:
         abort(404)
-    if request.is_json:
-        try:
-            data = request.get_json()
-        except BaseException:
-            data = {"error": "Not a JSON"}
-            return data, 400
-        if "name" in data:
-            city = City(name=data["name"])
-            city.state_id = state_id
-            city.save()
-            return city.to_dict(), 201
-        data = {"error": "Missing name"}
-        return (jsonify(data), 400)
+    data = request.get_json()
+    city = City(**data)
+    city.state_id = state_id
+    city.save()
+    return jsonify(city.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
@@ -82,3 +76,18 @@ def updateCity(city_id):
         city.save()
         return jsonify(city.to_dict())
     abort(404)
+
+
+# @app_views.route('/states/<state_id>', methods=['PUT'])
+# def putStates(state_id):
+#     """ Updates a State in db storage """
+#     state = models.storage.get("State", state_id)
+#     if state is None:
+#         abort(404)
+#     if not request.get_json():
+#         return jsonify({'error': 'Not a JSON'}), 400
+#     for key, val in request.get_json().items():
+#         if key != 'id' and key != 'created_at' and key != 'updated_at':
+#             setattr(state, key, val)
+#     state.save()
+#     return jsonify(state.to_dict()), 200
