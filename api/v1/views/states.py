@@ -57,7 +57,7 @@ def createState():
 def updateState(state_id):
     """ Updates a state in db storage """
     state = models.storage.get("State", state_id)
-    if state and request.is_json:
+    if state:
         try:
             data = request.get_json()
         except BaseException:
