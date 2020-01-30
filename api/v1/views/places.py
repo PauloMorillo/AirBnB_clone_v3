@@ -15,7 +15,7 @@ import models
     methods=['GET'])
 def showPlaces(city_id):
     """ Shows all places for a city in db storage """
-    city = models.storage.get("Place", city_id)
+    city = models.storage.get("City", city_id)
     if city:
         placesList = []
         eachPlace = models.storage.all("Place")
@@ -48,7 +48,7 @@ def deletePlace(place_id):
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'])
 def createPlace(city_id):
-    """ Creates a place for a state in db storage """
+    """ Creates a place for a city in db storage """
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
     if 'user_id' not in request.json:
@@ -75,7 +75,6 @@ def updatePlace(place_id):
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
-
     for key, val in request.get_json().items():
         if key not in ['id', 'created_at', 'updated_at', 'user_id', 'city_id']:
             setattr(place, key, val)
