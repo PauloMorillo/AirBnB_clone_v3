@@ -39,18 +39,17 @@ def deleteStateId(state_id):
 @app_views.route('/states/', methods=['POST'])
 def createState():
     """ Creates a state db storage """
-    if request.is_json:
-        try:
-            data = request.get_json()
-        except BaseException:
-            data = {"error": "Not a JSON"}
-            return data, 400
-        if "name" in data:
-            state = State(**data)
-            state.save()
-            return (jsonify(state.to_dict()), 201)
-        data = {"error": "Missing name"}
-        return (jsonify(data), 400)
+    try:
+        data = request.get_json()
+    except BaseException:
+        data = {"error": "Not a JSON"}
+        return data, 400
+    if "name" in data:
+        state = State(**data)
+        state.save()
+        return (jsonify(state.to_dict()), 201)
+    data = {"error": "Missing name"}
+    return (jsonify(data), 400)
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
