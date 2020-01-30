@@ -39,22 +39,19 @@ def deleteStateId(state_id):
 @app_views.route('/states/', methods=['POST'])
 def createState():
     """ Creates a state db storage """
-    try:
-        data = request.get_json()
-    except:
-        data = {"error": "Not a JSON"}
-        return data, 400
-    if "name" in data:
-        state = State(**data)
-        state.save()
-        return (jsonify(state.to_dict()), 201)
-    data = {"error": "Missing name"}
-    return (jsonify(data), 400)
+    if not request.json:
+        return jsonify({"error": "Not a JSON"}), 400
+    if 'name' not in request.json:
+        return jsonify({"error": "Missing name"}), 400
+    content = request.get_json()
+    state = State(**content)
+    state.save()
+    return jsonify(state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
-def put_states(state_id):
-    """ Update a State object """
+def putStates(state_id):
+    """ Updates a State in db storage """
     state = models.storage.get("State", state_id)
     if state is None:
         abort(404)
